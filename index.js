@@ -114,7 +114,7 @@ exports.addOwnName = function (feed, name, cb) {
   validateAndAdd(feed, { type: 'name', name: name }, cb)
 }
 
-exports.addOtherName = function (feed, name, target, cb) {
+exports.addOtherName = function (feed, target, name, cb) {
   validateAndAdd(feed, { type: 'name', name: name, rel: 'names', feed: target }, cb)  
 }
 
