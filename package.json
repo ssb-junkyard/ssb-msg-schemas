@@ -1,0 +1,22 @@
+{
+  "name": "ssb-msg-schemas",
+  "version": "1.0.0",
+  "description": "validation and publishing methods for common ssb message types",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ssbc/ssb-msg-schemas.git"
+  },
+  "dependencies": {
+    "ssb-msgs": "~2.0.0"
+  },
+  "author": "Paul Frazee <pfrazee@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ssbc/ssb-msg-schemas/issues"
+  },
+  "homepage": "https://github.com/ssbc/ssb-msg-schemas"
+}
