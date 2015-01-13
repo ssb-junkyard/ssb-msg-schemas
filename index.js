@@ -16,6 +16,7 @@ exports.isHash = isHash
 exports.errors = errors
 
 var repliesToOpts = { rel: 'replies-to' }
+var mentionsOpts  = { rel: 'mentions' }
 var namesOpts     = { rel: 'names' }
 var followsOpts   = { rel: 'follows' }
 var unfollowsOpts = { rel: 'unfollows' }
@@ -33,6 +34,13 @@ exports.validators = {
       var link = links[i]
       if (!link.msg || !isHash(link.msg))
         return new errors.BadLinkAttr('replies-to', 'msg', 'Replies-to link must have a valid msg reference')
+    }
+
+    var links = ssbMsgs.getLinks(content, mentionsOpts)
+    for (var i =0; i < links.length; i++) {
+      var link = links[i]
+      if (!link.feed || !isHash(link.feed))
+        return new errors.BadLinkAttr('mentions', 'msg', 'Mentions link must have a valid msg reference')
     }
   },
 
@@ -98,12 +106,36 @@ exports.validateAndAdd = function (feed, content, cb) {
 
 // adders
 
-exports.addPost = function (feed, text, cb) {
-  validateAndAdd(feed, { type: 'post', text: text }, cb)
+exports.addPost = function (feed, text, opts, cb) {
+  if (typeof opts == 'function') {
+    cb = opts
+    opts = null
+  }
+  var content = { type: 'post', text: text }
+  if (opts && opts.mentions) {
+    if (Array.isArray(opts.mentions)) {
+      content.mentions = opts.mentions.map(function (id) { return { rel: 'mentions', feed: id }})
+    } else {
+      content.mentions = { rel: 'mentions', feed: opts.mentions }
+    }
+  }
+  validateAndAdd(feed, content, cb)
 }
 
-exports.addReplyPost = function (feed, text, parent, cb) {
-  validateAndAdd(feed, { type: 'post', text: text, repliesTo: { msg: parent, rel: 'replies-to' } }, cb)
+exports.addReplyPost = function (feed, text, parent, opts, cb) {
+  if (typeof opts == 'function') {
+    cb = opts
+    opts = null
+  }
+  var content = { type: 'post', text: text, repliesTo: { msg: parent, rel: 'replies-to' } }
+  if (opts && opts.mentions) {
+    if (Array.isArray(opts.mentions)) {
+      content.mentions = opts.mentions.map(function (id) { return { rel: 'mentions', feed: id }})
+    } else {
+      content.mentions = { rel: 'mentions', feed: opts.mentions }
+    }
+  }
+  validateAndAdd(feed, content, cb)
 }
 
 exports.addAdvert = function (feed, text, cb) {
