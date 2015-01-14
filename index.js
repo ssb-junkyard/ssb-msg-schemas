@@ -104,62 +104,62 @@ exports.validateAndAdd = function (feed, content, cb) {
   feed.add(content, cb)
 }
 
-// adders
-
-exports.addPost = function (feed, text, opts, cb) {
-  if (typeof opts == 'function') {
-    cb = opts
-    opts = null
-  }
-  var content = { type: 'post', text: text }
-  if (opts && opts.mentions) {
-    if (Array.isArray(opts.mentions)) {
-      content.mentions = opts.mentions.map(function (id) { return { rel: 'mentions', feed: id }})
-    } else {
-      content.mentions = { rel: 'mentions', feed: opts.mentions }
+var schemas = {
+  post: function (text, opts) {
+    var content = { type: 'post', text: text }
+    if (opts && opts.mentions) {
+      if (Array.isArray(opts.mentions)) {
+        content.mentions = opts.mentions.map(function (id) { return { rel: 'mentions', feed: id }})
+      } else {
+        content.mentions = { rel: 'mentions', feed: opts.mentions }
+      }
     }
-  }
-  validateAndAdd(feed, content, cb)
-}
-
-exports.addReplyPost = function (feed, text, parent, opts, cb) {
-  if (typeof opts == 'function') {
-    cb = opts
-    opts = null
-  }
-  var content = { type: 'post', text: text, repliesTo: { msg: parent, rel: 'replies-to' } }
-  if (opts && opts.mentions) {
-    if (Array.isArray(opts.mentions)) {
-      content.mentions = opts.mentions.map(function (id) { return { rel: 'mentions', feed: id }})
-    } else {
-      content.mentions = { rel: 'mentions', feed: opts.mentions }
+    return content
+  },
+  replyPost: function (opts) {
+    var content = { type: 'post', text: text, repliesTo: { msg: parent, rel: 'replies-to' } }
+    if (opts && opts.mentions) {
+      if (Array.isArray(opts.mentions)) {
+        content.mentions = opts.mentions.map(function (id) { return { rel: 'mentions', feed: id }})
+      } else {
+        content.mentions = { rel: 'mentions', feed: opts.mentions }
+      }
     }
+    return content
+  },
+  advert: function (text) {
+    return {type: 'advert', text: text }
   }
-  validateAndAdd(feed, content, cb)
+  ownName: function (name) {
+    return {type: 'name', name: name}
+  },
+  otherName: function (target, name) {
+    return { type: 'name', name: name, rel: 'names', feed: target }
+  },
+  follow: function (target) {
+    return { type: 'follow', rel: 'follows', feed: target }
+  },
+  unfollow: function (target) {
+    return { type: 'follow', rel: 'unfollows', feed: target }
+  },
+  trust: function (target, value) {
+    return { type: 'trust', rel: 'trusts', feed: target, value: value }
+  }
 }
 
-exports.addAdvert = function (feed, text, cb) {
-  validateAndAdd(feed, { type: 'advert', text: text }, cb)
+function createAdd(name) {
+  return function () {
+    var args = [].slice.call(arguments)
+    var feed = args.shift()
+    var cb = args.pop()
+    var content = schemas[name].apply(null, args)
+    validateAndAdd(feed, content, cb)
+  }
 }
 
-exports.addOwnName = function (feed, name, cb) {
-  validateAndAdd(feed, { type: 'name', name: name }, cb)
+for(var k in schemas) {
+  exports[k] = schemas[k]
+  var addK = 'add'+k[0].toUpperCase() + k.substring(1)
+  exports[addK] = createAdd(k)
 }
 
-exports.addOtherName = function (feed, target, name, cb) {
-  validateAndAdd(feed, { type: 'name', name: name, rel: 'names', feed: target }, cb)  
-}
-
-exports.addFollow = function (feed, target, cb) {
-  validateAndAdd(feed, { type: 'follow', rel: 'follows', feed: target }, cb)
-}
-
-exports.addUnfollow = function (feed, target, cb) {
-  validateAndAdd(feed, { type: 'follow', rel: 'unfollows', feed: target }, cb)
-}
-
-exports.addTrust = function (feed, target, value, cb) {
-  if (typeof value == 'string' && value !== '')
-    value = +value // try to convert to a number
-  validateAndAdd(feed, { type: 'trust', rel: 'trusts', feed: target, value: value }, cb)
-}
