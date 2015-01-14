@@ -22,7 +22,7 @@ var followsOpts   = { rel: 'follows' }
 var unfollowsOpts = { rel: 'unfollows' }
 var trustsOpts    = { rel: 'trusts' }
 
-var validators = 
+var validators =
 exports.validators = {
 
   post: function (content) {
@@ -104,7 +104,7 @@ exports.validateAndAdd = function (feed, content, cb) {
   feed.add(content, cb)
 }
 
-var schemas = {
+var schemas = exports.schemas = {
   post: function (text, opts) {
     var content = { type: 'post', text: text }
     if (opts && opts.mentions) {
@@ -116,7 +116,7 @@ var schemas = {
     }
     return content
   },
-  replyPost: function (opts) {
+  replyPost: function (text, opts, parent) {
     var content = { type: 'post', text: text, repliesTo: { msg: parent, rel: 'replies-to' } }
     if (opts && opts.mentions) {
       if (Array.isArray(opts.mentions)) {
@@ -129,7 +129,7 @@ var schemas = {
   },
   advert: function (text) {
     return {type: 'advert', text: text }
-  }
+  },
   ownName: function (name) {
     return {type: 'name', name: name}
   },
@@ -158,7 +158,6 @@ function createAdd(name) {
 }
 
 for(var k in schemas) {
-  exports[k] = schemas[k]
   var addK = 'add'+k[0].toUpperCase() + k.substring(1)
   exports[addK] = createAdd(k)
 }
