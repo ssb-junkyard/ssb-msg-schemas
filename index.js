@@ -117,6 +117,10 @@ var schemas = exports.schemas = {
     return content
   },
   replyPost: function (text, opts, parent) {
+    if (!parent && typeof opts == 'string') {
+      parent = opts
+      opts = null
+    }
     var content = { type: 'post', text: text, repliesTo: { msg: parent, rel: 'replies-to' } }
     if (opts && opts.mentions) {
       if (Array.isArray(opts.mentions)) {
