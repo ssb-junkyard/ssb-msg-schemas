@@ -123,6 +123,9 @@ var schemas = exports.schemas = {
   },
   trust: function (target, value) {
     return { type: 'trust', target: { feed: target }, trust: value }
+  },
+  pub: function (address) {
+    return { type: 'pub', address: address }
   }
 }
 

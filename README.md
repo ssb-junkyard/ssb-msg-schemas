@@ -15,6 +15,7 @@ schemas.validators.advert(content)
 schemas.validators.name(content)
 schemas.validators.follow(content)
 schemas.validators.trust(content)
+schemas.validators.pub(content)
 
 // publishing functions
 // - `feed` should be the feed interface, eg an ssb feed or sbot rpc api
@@ -25,6 +26,7 @@ schemas.addOtherName(feed, target, name, cb)
 schemas.addFollow(feed, target, cb)
 schemas.addUnfollow(feed, target, cb)
 schemas.addTrust(feed, target, value, cb)
+schemas.addPub(address, cb)
 
 // errors
 schemas.errors.UnknownType
