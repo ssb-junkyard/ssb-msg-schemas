@@ -6,6 +6,14 @@ function UnknownTypeError(msg) {
 UnknownTypeError.prototype = Error.prototype
 exports.UnknownType = UnknownTypeError
 
+function MalformedMessageError(msg) {
+  this.name = 'MalformedMessage'
+  this.unknownType = true
+  this.message = (msg||'Malformed message')
+}
+MalformedMessageError.prototype = Error.prototype
+exports.MalformedMessage = MalformedMessageError
+
 function BadAttrError(attr, msg) {
   this.name = 'BadAttr'
   this.badAttr = true
