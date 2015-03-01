@@ -102,7 +102,7 @@ var schemas = exports.schemas = {
   name: function (name) {
     return { type: 'name', name: name }
   },
-  contact: function (target, opts) {
+  contact: function (contact, opts) {
     var content = { type: 'contact', contact: { feed: contact } }
     if (opts) {
       if ('name' in opts)
