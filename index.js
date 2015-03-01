@@ -42,31 +42,21 @@ exports.validators = {
   name: function (content) {
     if (typeof content.name != 'string' || !content.name.trim())
       return new errors.BadAttr('text', 'Can not use an empty name')
-
-    if (!allLinksValid(mlib.asLinks(content.target), 'feed'))
-      return new errors.BadLinkAttr('target', 'feed', 'target link must have a valid feed reference')
   },
 
-  follow: function (content) {
-    if (content.follow !== true && content.follow !== false)
-      return new errors.BadAttr('follow', 'Follow msgs must have a `.follow` of true or false')
-
-    var links = mlib.asLinks(content.target)
+  contact: function (content) {
+    var links = mlib.asLinks(content.contact)
     if (links.length === 0)
-      return new errors.MalformedMessage('target link is required')
+      return new errors.MalformedMessage('contact link is required')
     if (!allLinksValid(links, 'feed'))
-      return new errors.BadLinkAttr('target', 'feed', 'target link must have a valid feed reference')
-  },
+      return new errors.BadLinkAttr('contact', 'feed', 'contact link must have a valid feed reference')
 
-  trust: function (content) {
-    if (content.trust !== -1 && content.trust !== 0 && content.trust !== 1)
-      return new errors.BadAttr('trust', 'Trusts msgs must have a `.trust` of -1, 0, or 1')
-
-    var links = mlib.asLinks(content.target)
-    if (links.length === 0)
-      return new errors.MalformedMessage('target link is required')
-    if (!allLinksValid(links, 'feed'))
-      return new errors.BadLinkAttr('target', 'feed', 'target link must have a valid feed reference')
+    if ('name' in content && typeof content.name != 'string' || !content.name.trim())
+      return new errors.BadAttr('text', 'Contact msgs must have a `.name` string that is not blank')
+    if ('following' in content && content.following !== true && content.following !== false)
+      return new errors.BadAttr('following', 'Contact msgs must have a `.following` of true or false')
+    if ('trust' in content && content.trust !== -1 && content.trust !== 0 && content.trust !== 1)
+      return new errors.BadAttr('trust', 'Contact msgs must have a `.trust` of -1, 0, or 1')
   },
 
   pub: function (content) {
@@ -109,20 +99,20 @@ var schemas = exports.schemas = {
   advert: function (text) {
     return { type: 'advert', text: text }
   },
-  ownName: function (name) {
+  name: function (name) {
     return { type: 'name', name: name }
   },
-  otherName: function (target, name) {
-    return { type: 'name', name: name, target: { feed: target } }
-  },
-  follow: function (target) {
-    return { type: 'follow', follow: true, target: { feed: target } }
-  },
-  unfollow: function (target) {
-    return { type: 'follow', follow: false, target: { feed: target } }
-  },
-  trust: function (target, value) {
-    return { type: 'trust', target: { feed: target }, trust: value }
+  contact: function (target, opts) {
+    var content = { type: 'contact', contact: { feed: contact } }
+    if (opts) {
+      if ('name' in opts)
+        content.name = opts.name
+      if ('trust' in opts)
+        content.trust = opts.trust
+      if ('following' in opts)
+        content.following = opts.following
+    }
+    return content
   },
   pub: function (address) {
     return { type: 'pub', address: address }
