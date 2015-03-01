@@ -51,7 +51,7 @@ exports.validators = {
     if (!allLinksValid(links, 'feed'))
       return new errors.BadLinkAttr('contact', 'feed', 'contact link must have a valid feed reference')
 
-    if ('name' in content && typeof content.name != 'string' || !content.name.trim())
+    if ('name' in content && (typeof content.name != 'string' || !content.name.trim()))
       return new errors.BadAttr('text', 'Contact msgs must have a `.name` string that is not blank')
     if ('following' in content && content.following !== true && content.following !== false)
       return new errors.BadAttr('following', 'Contact msgs must have a `.following` of true or false')
