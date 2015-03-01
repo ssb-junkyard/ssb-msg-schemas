@@ -13,22 +13,20 @@ schemas.validate(content)
 schemas.validators.post(content)
 schemas.validators.advert(content)
 schemas.validators.name(content)
-schemas.validators.follow(content)
-schemas.validators.trust(content)
+schemas.validators.contact(content)
+schemas.validators.pub(content)
 
 // publishing functions
 // - `feed` should be the feed interface, eg an ssb feed or sbot rpc api
-schemas.addPost(feed, text, [{ mentions: idOrIdArray }], cb)
-schemas.addReplyPost(feed, text, [{ mentions: idOrIdArray }], parent, cb)
+schemas.addPost(feed, text, [{ repliesTo: link, refers: links, mentions: links, attachments: links }], cb)
 schemas.addAdvert(feed, text, cb)
-schemas.addOwnName(feed, name, cb)
-schemas.addOtherName(feed, target, name, cb)
-schemas.addFollow(feed, target, cb)
-schemas.addUnfollow(feed, target, cb)
-schemas.addTrust(feed, target, value, cb)
+schemas.addName(feed, name, cb)
+schemas.addContact(feed, target, { following: bool, name: string, trust: -1|0|1 }, cb)
+schemas.addPub(address, cb)
 
 // errors
 schemas.errors.UnknownType
+schemas.errors.MalformedMessage
 schemas.errors.BadAttr
 schemas.errors.BadLinkAttr
 ```
