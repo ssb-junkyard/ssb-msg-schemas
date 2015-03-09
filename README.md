@@ -12,7 +12,6 @@ schemas.validate(content)
 // individual validator functions (by message type)
 schemas.validators.post(content)
 schemas.validators.advert(content)
-schemas.validators.name(content)
 schemas.validators.contact(content)
 schemas.validators.pub(content)
 
@@ -20,8 +19,18 @@ schemas.validators.pub(content)
 // - `feed` should be the feed interface, eg an ssb feed or sbot rpc api
 schemas.addPost(feed, text, [{ repliesTo: link, refers: links, mentions: links, attachments: links }], cb)
 schemas.addAdvert(feed, text, cb)
-schemas.addName(feed, name, cb)
-schemas.addContact(feed, target, { following: bool, name: string, trust: -1|0|1 }, cb)
+schemas.addContact(feed, target, {
+  following: bool,
+  name: string,
+  trust: -1|0|1,
+  profilePic: {
+    ext: hash,
+    type: string, // should be an image mimetype, eg 'image/png'
+    size: number, // in bytes
+    width: number, // in pixels (optional)
+    height: number // in pixels (optional)
+  }
+}, cb)
 schemas.addPub(address, cb)
 
 // errors

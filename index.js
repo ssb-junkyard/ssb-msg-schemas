@@ -39,11 +39,6 @@ exports.validators = {
       return new errors.BadAttr('text', 'Can not create an empty advert')
   },
 
-  name: function (content) {
-    if (typeof content.name != 'string' || !content.name.trim())
-      return new errors.BadAttr('text', 'Can not use an empty name')
-  },
-
   contact: function (content) {
     var links = mlib.asLinks(content.contact)
     if (links.length === 0)
@@ -100,9 +95,6 @@ var schemas = exports.schemas = {
   },
   advert: function (text) {
     return { type: 'advert', text: text }
-  },
-  name: function (name) {
-    return { type: 'name', name: name }
   },
   contact: function (contact, opts) {
     var content = { type: 'contact', contact: { feed: contact } }
