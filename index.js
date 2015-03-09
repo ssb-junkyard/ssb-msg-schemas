@@ -50,6 +50,8 @@ exports.validators = {
       return new errors.MalformedMessage('contact link is required')
     if (!allLinksValid(links, 'feed'))
       return new errors.BadLinkAttr('contact', 'feed', 'contact link must have a valid feed reference')
+    if (!allLinksValid(mlib.asLinks(content.profilePic), 'ext'))
+      return new errors.BadLinkAttr('profilePic', 'ext', 'profilePic link must have a valid ext reference')
 
     if ('name' in content && (typeof content.name != 'string' || !content.name.trim()))
       return new errors.BadAttr('text', 'Contact msgs must have a `.name` string that is not blank')
@@ -78,7 +80,7 @@ var validateAndAdd =
 exports.validateAndAdd = function (feed, content, cb) {
   var err = validate(content)
   if (err) return cb(err)
-  feed.add(content, cb)
+  feed.publish(content, cb)
 }
 
 var schemas = exports.schemas = {
@@ -111,6 +113,8 @@ var schemas = exports.schemas = {
         content.trust = opts.trust
       if ('following' in opts)
         content.following = opts.following
+      if ('profilePic' in opts)
+        content.profilePic = opts.profilePic
     }
     return content
   },
