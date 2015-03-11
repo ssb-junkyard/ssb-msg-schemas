@@ -100,15 +100,8 @@ var schemas = exports.schemas = {
   },
   contact: function (contact, opts) {
     var content = { type: 'contact', contact: { feed: contact } }
-    if (opts) {
-      if ('name' in opts)
-        content.name = opts.name
-      if ('trust' in opts)
-        content.trust = opts.trust
-      if ('following' in opts)
-        content.following = opts.following
-      if ('profilePic' in opts)
-        content.profilePic = opts.profilePic
+    for (var k in opts) {
+      content[k] = opts[k]
     }
     return content
   },
