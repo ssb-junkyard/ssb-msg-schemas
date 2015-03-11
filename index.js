@@ -76,7 +76,8 @@ var validateAndAdd =
 exports.validateAndAdd = function (feed, content, cb) {
   var err = validate(content)
   if (err) return cb(err)
-  feed.publish(content, cb)
+  var adder = feed.publish || feed.add
+  adder.call(feed, content, cb)
 }
 
 var schemas = exports.schemas = {
