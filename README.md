@@ -33,6 +33,9 @@ schemas.addContact(feed, target, {
 }, cb)
 schemas.addPub(address, cb)
 
+// get functions
+schemas.getContact(ssb, { by: feed_id, for: feed_id }, cbb)
+
 // errors
 schemas.errors.UnknownType
 schemas.errors.MalformedMessage

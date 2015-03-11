@@ -1,5 +1,6 @@
 var errors = require('./errors')
 var mlib = require('ssb-msgs')
+var pull = require('pull-stream')
 
 // validation
 
@@ -130,3 +131,29 @@ for(var k in schemas) {
   exports[addK] = createAdd(k)
 }
 
+exports.getContact = function (ssb, opts, cb) {
+  if (!opts || !opts.by || !opts.for)
+    throw 'opts.by and opts.for are required'
+
+  var contact = {}
+  pull(
+    ssb.feedsLinkedToFeed({ id: opts.for, rel: 'contact' }),
+    pull.asyncMap(function (entry, cb) {
+      if (entry.source == opts.by)
+        ssb.get(entry.message, cb)
+      else
+        cb()
+    }),
+    pull.drain(
+      function (msg) {
+        for (var k in msg.content)
+          contact[k] = msg.content[k]
+      },
+      function (err) {
+        if (err)
+          return cb(err)
+        cb(null, contact)
+      }
+    )
+  )
+}
