@@ -46,13 +46,19 @@ exports.validators = {
       return new errors.MalformedMessage('contact link is required')
     if (!allLinksValid(links, 'feed'))
       return new errors.BadLinkAttr('contact', 'feed', 'contact link must have a valid feed reference')
-    if (!allLinksValid(mlib.asLinks(content.profilePic), 'ext'))
+
+    if ('profilePic' in content && !allLinksValid(mlib.asLinks(content.profilePic), 'ext'))
       return new errors.BadLinkAttr('profilePic', 'ext', 'profilePic link must have a valid ext reference')
+
+    if ('master' in content && !allLinksValid(mlib.asLinks(content.master), 'ext'))
+      return new errors.BadLinkAttr('master', 'feed', 'master link must have a valid feed reference')
 
     if ('name' in content && (typeof content.name != 'string' || !content.name.trim()))
       return new errors.BadAttr('text', 'Contact msgs must have a `.name` string that is not blank')
+
     if ('following' in content && content.following !== true && content.following !== false)
       return new errors.BadAttr('following', 'Contact msgs must have a `.following` of true or false')
+    
     if ('trust' in content && content.trust !== -1 && content.trust !== 0 && content.trust !== 1)
       return new errors.BadAttr('trust', 'Contact msgs must have a `.trust` of -1, 0, or 1')
   },
