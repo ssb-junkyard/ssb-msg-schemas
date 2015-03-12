@@ -29,7 +29,8 @@ schemas.addContact(feed, target, {
     size: number, // in bytes
     width: number, // in pixels (optional)
     height: number // in pixels (optional)
-  }
+  },
+  master: { feed: hash } // makes the contact a subfeed of the linked-to feed
 }, cb)
 schemas.addPub(address, cb)
 
