@@ -1,5 +1,6 @@
 var errors = require('./errors')
 var mlib = require('ssb-msgs')
+var pull = require('pull-stream')
 
 // validation
 
@@ -39,11 +40,6 @@ exports.validators = {
       return new errors.BadAttr('text', 'Can not create an empty advert')
   },
 
-  name: function (content) {
-    if (typeof content.name != 'string' || !content.name.trim())
-      return new errors.BadAttr('text', 'Can not use an empty name')
-  },
-
   contact: function (content) {
     var links = mlib.asLinks(content.contact)
     if (links.length === 0)
@@ -51,10 +47,18 @@ exports.validators = {
     if (!allLinksValid(links, 'feed'))
       return new errors.BadLinkAttr('contact', 'feed', 'contact link must have a valid feed reference')
 
+    if ('profilePic' in content && !allLinksValid(mlib.asLinks(content.profilePic), 'ext'))
+      return new errors.BadLinkAttr('profilePic', 'ext', 'profilePic link must have a valid ext reference')
+
+    if ('master' in content && !allLinksValid(mlib.asLinks(content.master), 'feed'))
+      return new errors.BadLinkAttr('master', 'feed', 'master link must have a valid feed reference')
+
     if ('name' in content && (typeof content.name != 'string' || !content.name.trim()))
       return new errors.BadAttr('text', 'Contact msgs must have a `.name` string that is not blank')
+
     if ('following' in content && content.following !== true && content.following !== false)
       return new errors.BadAttr('following', 'Contact msgs must have a `.following` of true or false')
+
     if ('trust' in content && content.trust !== -1 && content.trust !== 0 && content.trust !== 1)
       return new errors.BadAttr('trust', 'Contact msgs must have a `.trust` of -1, 0, or 1')
   },
@@ -78,7 +82,8 @@ var validateAndAdd =
 exports.validateAndAdd = function (feed, content, cb) {
   var err = validate(content)
   if (err) return cb(err)
-  feed.add(content, cb)
+  var adder = feed.publish || feed.add
+  adder.call(feed, content, cb)
 }
 
 var schemas = exports.schemas = {
@@ -99,18 +104,10 @@ var schemas = exports.schemas = {
   advert: function (text) {
     return { type: 'advert', text: text }
   },
-  name: function (name) {
-    return { type: 'name', name: name }
-  },
   contact: function (contact, opts) {
     var content = { type: 'contact', contact: { feed: contact } }
-    if (opts) {
-      if ('name' in opts)
-        content.name = opts.name
-      if ('trust' in opts)
-        content.trust = opts.trust
-      if ('following' in opts)
-        content.following = opts.following
+    for (var k in opts) {
+      content[k] = opts[k]
     }
     return content
   },
@@ -134,3 +131,29 @@ for(var k in schemas) {
   exports[addK] = createAdd(k)
 }
 
+exports.getContact = function (ssb, opts, cb) {
+  if (!opts || !opts.by || !opts.for)
+    throw 'opts.by and opts.for are required'
+
+  var contact = {}
+  pull(
+    ssb.feedsLinkedToFeed({ id: opts.for, rel: 'contact' }),
+    pull.asyncMap(function (entry, cb) {
+      if (entry.source == opts.by)
+        ssb.get(entry.message, cb)
+      else
+        cb()
+    }),
+    pull.drain(
+      function (msg) {
+        for (var k in msg.content)
+          contact[k] = msg.content[k]
+      },
+      function (err) {
+        if (err)
+          return cb(err)
+        cb(null, contact)
+      }
+    )
+  )
+}

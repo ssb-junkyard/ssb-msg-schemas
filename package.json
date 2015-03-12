@@ -1,6 +1,6 @@
 {
   "name": "ssb-msg-schemas",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "validation and publishing methods for common ssb message types",
   "main": "index.js",
   "scripts": {
@@ -11,6 +11,7 @@
     "url": "git://github.com/ssbc/ssb-msg-schemas.git"
   },
   "dependencies": {
+    "pull-stream": "~2.26.0",
     "ssb-msgs": "~3.0.0"
   },
   "author": "Paul Frazee <pfrazee@gmail.com>",
