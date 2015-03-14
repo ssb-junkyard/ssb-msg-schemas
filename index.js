@@ -50,8 +50,8 @@ exports.validators = {
     if ('profilePic' in content && !allLinksValid(mlib.asLinks(content.profilePic), 'ext'))
       return new errors.BadLinkAttr('profilePic', 'ext', 'profilePic link must have a valid ext reference')
 
-    if ('master' in content && !allLinksValid(mlib.asLinks(content.master), 'feed'))
-      return new errors.BadLinkAttr('master', 'feed', 'master link must have a valid feed reference')
+    if ('alias' in content && content.alias !== false && content.alias !== null && typeof content.alias !== 'string'))
+      return new errors.BadAttr('alias', '`alias` must be a string, false, or null')
 
     if ('name' in content && (typeof content.name != 'string' || !content.name.trim()))
       return new errors.BadAttr('text', 'Contact msgs must have a `.name` string that is not blank')

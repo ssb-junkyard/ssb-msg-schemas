@@ -22,6 +22,7 @@ schemas.addAdvert(feed, text, cb)
 schemas.addContact(feed, target, {
   following: bool,
   name: string,
+  alias: string|false, // is this feed an alias of my feed? suggested values: 'primary', 'application'
   trust: -1|0|1,
   profilePic: {
     ext: hash,
@@ -30,7 +31,6 @@ schemas.addContact(feed, target, {
     width: number, // in pixels (optional)
     height: number // in pixels (optional)
   },
-  master: { feed: hash } // makes the contact a subfeed of the linked-to feed
 }, cb)
 schemas.addPub(address, cb)
 
