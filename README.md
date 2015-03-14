@@ -22,7 +22,7 @@ schemas.addAdvert(feed, text, cb)
 schemas.addContact(feed, target, {
   following: bool,
   name: string,
-  alias: string|false, // is this feed an alias of my feed? suggested values: 'primary', 'application'
+  alias: string|false, // is this feed an alias of my feed? suggested values: 'primary', 'secondary', or false
   trust: -1|0|1,
   profilePic: {
     ext: hash,
