@@ -6,10 +6,8 @@ var ssbMsgs = require('ssb-msgs')
 function isString(s) {
   return 'string' === typeof s
 }
-function isHash (data) {
-  return isString(data) && /^[A-Za-z0-9\/+]{43}=\.blake2s$/.test(data)
-}
-exports.isHash = isHash
+
+var isHash = ssbMsgs.isHash
 
 // validation
 
