@@ -11,9 +11,9 @@
     "url": "git://github.com/ssbc/ssb-msg-schemas.git"
   },
   "dependencies": {
-    "ssb-ref": "~0.0.0",
     "pull-stream": "~2.27.0",
-    "ssb-msgs": "~3.1.1"
+    "ssb-msgs": "^3.1.2",
+    "ssb-ref": "~0.0.0"
   },
   "author": "Paul Frazee <pfrazee@gmail.com>",
   "license": "MIT",
