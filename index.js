@@ -1,13 +1,15 @@
 var errors = require('./errors')
 var ssbMsgs = require('ssb-msgs')
-
+var isRef = require('ssb-ref')
 // copied from ssb-keys to avoid a large dep (would be bad for phoenix)
 // todo: move into independent repo?
 function isString(s) {
   return 'string' === typeof s
 }
 
-var isHash = ssbMsgs.isHash
+var isHash = isRef.isHash
+var isFeedId = isRef.isFeedId
+
 
 // validation
 
@@ -37,7 +39,7 @@ exports.validators = {
     var links = ssbMsgs.getLinks(content, mentionsOpts)
     for (var i =0; i < links.length; i++) {
       var link = links[i]
-      if (!link.feed || !isHash(link.feed))
+      if (!link.feed || !isFeedId(link.feed))
         return new errors.BadLinkAttr('mentions', 'msg', 'Mentions link must have a valid msg reference')
     }
   },
@@ -63,14 +65,14 @@ exports.validators = {
     var links = ssbMsgs.getLinks(content, followsOpts)
     for (var i =0; i < links.length; i++) {
       var link = links[i]
-      if (!link.feed || !isHash(link.feed))
+      if (!link.feed || !isFeedId(link.feed))
         return new errors.BadLinkAttr('follows', 'feed', 'Follows link must have a valid feed reference')
     }
 
     var links = ssbMsgs.getLinks(content, unfollowsOpts)
     for (var i =0; i < links.length; i++) {
       var link = links[i]
-      if (!link.feed || !isHash(link.feed))
+      if (!link.feed || !isFeedId(link.feed))
         return new errors.BadLinkAttr('unfollows', 'feed', 'Unfollows link must have a valid feed reference')
     }
   },
@@ -79,7 +81,7 @@ exports.validators = {
     var links = ssbMsgs.getLinks(content, trustsOpts)
     for (var i =0; i < links.length; i++) {
       var link = links[i]
-      if (!link.feed || !isHash(link.feed))
+      if (!link.feed || !isFeedId(link.feed))
         return new errors.BadLinkAttr('trusts', 'feed', 'Trusts link must have a valid feed reference')
       if (link.value !== -1 && link.value !== 0 && link.value !== 1)
         return new errors.BadLinkAttr('trusts', 'value', 'Trusts link must have a value of -1, 0, or 1')
