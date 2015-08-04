@@ -85,5 +85,8 @@ exports.unflag = function (id, flagmsgId) {
 }
 
 exports.pub = function (id, host, port) {
-  return { type: 'pub', pub: mlib.link(id), host: host, port: port }
+  var publink = mlib.link(id)
+  publink.host = host
+  publink.port = port
+  return { type: 'pub', pub: publink }
 }

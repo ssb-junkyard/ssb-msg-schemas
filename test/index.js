@@ -64,7 +64,7 @@ tape('schemas', function (t) {
   )
   t.deepEqual(
     schemas.pub(feedid, 'host', 123),
-    { type: 'pub', pub: { link: feedid }, host: 'host', port: 123 }
+    { type: 'pub', pub: { link: feedid, host: 'host', port: 123 } }
   )
   t.end()
 })
