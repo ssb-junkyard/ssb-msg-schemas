@@ -12,43 +12,43 @@ tape('schemas', function (t) {
   )
   t.deepEqual(
     schemas.post('text', msgid, null, [feedid]),
-    { type: 'post', text: 'text', repliesTo: { link: msgid }, recps: [{ link: feedid }] }
+    { type: 'post', text: 'text', repliesTo: msgid, recps: [feedid] }
   )
   t.deepEqual(
     schemas.post('text', null, [feedid, msgid, blobid]),
-    { type: 'post', text: 'text', mentions: [{ link: feedid }, { link: msgid }, { link: blobid }] }
+    { type: 'post', text: 'text', mentions: [feedid, msgid, blobid] }
   )
   t.deepEqual(
     schemas.post('text', msgid, [feedid, msgid, blobid], [feedid]),
-    { type: 'post', text: 'text', repliesTo: { link: msgid }, mentions: [{ link: feedid }, { link: msgid }, { link: blobid }], recps: [{ link: feedid }] }
+    { type: 'post', text: 'text', repliesTo: msgid, mentions: [feedid, msgid, blobid], recps: [feedid] }
   )
   t.deepEqual(
     schemas.name(feedid, 'name'),
-    { type: 'about', about: { link: feedid }, name: 'name' }
+    { type: 'about', about: feedid, name: 'name' }
   )
   t.deepEqual(
     schemas.image(feedid, { link: blobid, size: 123 }),
-    { type: 'about', about: { link: feedid }, image: { link: blobid, size: 123 } }
+    { type: 'about', about: feedid, image: { link: blobid, size: 123 } }
   )
   t.deepEqual(
     schemas.about(feedid, 'name', { link: blobid, size: 123 }),
-    { type: 'about', about: { link: feedid }, name: 'name', image: { link: blobid, size: 123 } }
+    { type: 'about', about: feedid, name: 'name', image: { link: blobid, size: 123 } }
   )
   t.deepEqual(
     schemas.follow(feedid),
-    { type: 'contact', contact: { link: feedid }, following: true, blocking: false }
+    { type: 'contact', contact: feedid, following: true, blocking: false }
   )
   t.deepEqual(
     schemas.unfollow(feedid),
-    { type: 'contact', contact: { link: feedid }, following: false }
+    { type: 'contact', contact: feedid, following: false }
   )
   t.deepEqual(
     schemas.block(feedid),
-    { type: 'contact', contact: { link: feedid }, following: false, blocking: true }
+    { type: 'contact', contact: feedid, following: false, blocking: true }
   )
   t.deepEqual(
     schemas.unblock(feedid),
-    { type: 'contact', contact: { link: feedid }, blocking: false }
+    { type: 'contact', contact: feedid, blocking: false }
   )
   t.deepEqual(
     schemas.vote(msgid, 1),
@@ -60,7 +60,7 @@ tape('schemas', function (t) {
   )
   t.deepEqual(
     schemas.unflag(msgid, msgid),
-    { type: 'flag', flag: { link: msgid, reason: false }, redacts: { link: msgid } }
+    { type: 'flag', flag: { link: msgid, reason: false }, redacts: msgid }
   )
   t.deepEqual(
     schemas.pub(feedid, 'host', 123),
