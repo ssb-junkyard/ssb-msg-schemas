@@ -12,8 +12,14 @@
   },
   "dependencies": {
     "pull-stream": "~2.27.0",
-    "ssb-msgs": "^3.1.2",
-    "ssb-ref": "~0.0.0"
+    "ssb-msgs": "^5.0.0",
+    "ssb-ref": "~2.0.0"
+  },
+  "devDependencies": {
+    "tape": "~3.0.0"
+  },
+  "scripts": {
+    "test": "set -e; for t in test/*.js; do node $t; done"
   },
   "author": "Paul Frazee <pfrazee@gmail.com>",
   "license": "MIT",
