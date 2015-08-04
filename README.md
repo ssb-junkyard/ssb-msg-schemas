@@ -5,7 +5,7 @@ Functions to create common SSB messages.
 ```js
 { type: 'post', text: String, repliesTo: Link, recps: FeedLinks, mentions: Links }
 { type: 'about', about: Link, name: String, image: BlobLink }
-{ type: 'contact', contact: FeedLink, following: Bool, blocking: Bool|String }
+{ type: 'contact', contact: FeedLink, following: Bool, blocking: Bool }
 { type: 'vote', vote: { link: Ref, value: -1|0|1 } }
 { type: 'flag', flag: { link: Ref, reason: false|String }, redacts: MsgLink }
 { type: 'pub', pub: FeedLink, host: String, port: Number }
