@@ -3,7 +3,7 @@
 Functions to create common SSB messages.
 
 ```js
-{ type: 'post', text: String, repliesTo: Link, recps: FeedLinks, mentions: Links }
+{ type: 'post', text: String, root: Link, branch: Link, recps: FeedLinks, mentions: Links }
 { type: 'about', about: Link, name: String, image: BlobLink }
 { type: 'contact', contact: FeedLink, following: Bool, blocking: Bool }
 { type: 'vote', vote: { link: Ref, value: -1|0|1 } }
@@ -15,8 +15,8 @@ Functions to create common SSB messages.
 ```js
 var schemas = require('ssb-msg-schemas')
 
-schemas.post(text, repliesTo (optional), mentions (optional), recps (optional))
-// => { type: 'post', text: text, repliesTo: repliesTo, mentions: mentions, recps: recps }
+schemas.post(text, root (optional), branch (optional), mentions (optional), recps (optional))
+// => { type: 'post', text: text, root: root, branch: branch, mentions: mentions, recps: recps }
 schemas.name(userId, name)
 // => { type: 'about', about: userId, name: name }
 schemas.image(userId, imgLink)

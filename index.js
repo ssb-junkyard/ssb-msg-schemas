@@ -21,13 +21,19 @@ function links (l) {
   return l.map(link)
 }
 
-exports.post = function (text, repliesTo, mentions, recps) {
+exports.post = function (text, root, branch, mentions, recps) {
   var content = { type: 'post', text: text }
-  if (repliesTo) {
-    repliesTo = link(repliesTo)
-    if (!repliesTo)
-      throw new Error('repliesTo is not a valid link')
-    content.repliesTo = repliesTo
+  if (root) {
+    root = link(root)
+    if (!root)
+      throw new Error('root is not a valid link')
+    content.root = root
+  }
+  if (branch) {
+    branch = link(branch)
+    if (!branch)
+      throw new Error('branch is not a valid link')
+    content.branch = branch
   }
   if (mentions && (!Array.isArray(mentions) || mentions.length)) {
     mentions = links(mentions)

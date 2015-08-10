@@ -3,6 +3,7 @@ var schemas = require('../')
 
 var feedid = '@5BmAwnJXrDVYje5FJX6Cg1eolZiWLZsThd5p/4ZJ6VY=.ed25519'
 var msgid  = '%RYnp9p24dlAPYGhrsFYdGGHIAYM2uM5pr1//RocCF/U=.sha256'
+var msgid2 = '%SYnp9p24dlAPYGhrsFYdGGHIAYM2uM5pr1//RocCF/U=.sha256'
 var blobid = '&RYnp9p24dlAPYGhrsFYdGGHIAYM2uM5pr1//RocCF/U=.sha256'
 
 tape('schemas', function (t) {
@@ -11,16 +12,16 @@ tape('schemas', function (t) {
     { type: 'post', text: 'text' }
   )
   t.deepEqual(
-    schemas.post('text', msgid, null, [feedid]),
-    { type: 'post', text: 'text', repliesTo: msgid, recps: [feedid] }
+    schemas.post('text', msgid, msgid2, null, [feedid]),
+    { type: 'post', text: 'text', root: msgid, branch: msgid2, recps: [feedid] }
   )
   t.deepEqual(
-    schemas.post('text', null, [feedid, msgid, blobid]),
+    schemas.post('text', null, null, [feedid, msgid, blobid]),
     { type: 'post', text: 'text', mentions: [feedid, msgid, blobid] }
   )
   t.deepEqual(
-    schemas.post('text', msgid, [feedid, msgid, blobid], [feedid]),
-    { type: 'post', text: 'text', repliesTo: msgid, mentions: [feedid, msgid, blobid], recps: [feedid] }
+    schemas.post('text', msgid, msgid2, [feedid, msgid, blobid], [feedid]),
+    { type: 'post', text: 'text', root: msgid, branch: msgid2, mentions: [feedid, msgid, blobid], recps: [feedid] }
   )
   t.deepEqual(
     schemas.name(feedid, 'name'),
