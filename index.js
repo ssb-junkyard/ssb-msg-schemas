@@ -58,10 +58,6 @@ exports.image = function (userId, imgLink) {
   return { type: 'about', about: link(userId), image: link(imgLink) }
 }
 
-exports.about = function (userId, name, imgLink) {
-  return { type: 'about', about: link(userId), name: name, image: link(imgLink) }
-}
-
 exports.follow = function (userId) {
   return { type: 'contact', contact: link(userId), following: true, blocking: false }
 }

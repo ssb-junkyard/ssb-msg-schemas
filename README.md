@@ -20,8 +20,6 @@ schemas.name(userId, name)
 // => { type: 'about', about: userId, name: name }
 schemas.image(userId, imgLink)
 // => { type: 'about', about: userId, image: imgLink }
-schemas.about(userId, name, imgLink)
-// => { type: 'about', about: userId, name: name, image: imgLink }
 schemas.follow(userId)
 // => { type: 'contact', contact: userId, following: true, blocking: false }
 schemas.unfollow(userId)

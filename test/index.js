@@ -32,10 +32,6 @@ tape('schemas', function (t) {
     { type: 'about', about: feedid, image: { link: blobid, size: 123 } }
   )
   t.deepEqual(
-    schemas.about(feedid, 'name', { link: blobid, size: 123 }),
-    { type: 'about', about: feedid, name: 'name', image: { link: blobid, size: 123 } }
-  )
-  t.deepEqual(
     schemas.follow(feedid),
     { type: 'contact', contact: feedid, following: true, blocking: false }
   )
@@ -56,12 +52,8 @@ tape('schemas', function (t) {
     { type: 'vote', vote: { link: msgid, value: 1 } }
   )
   t.deepEqual(
-    schemas.flag(msgid, 'reason'),
-    { type: 'flag', flag: { link: msgid, reason: 'reason' } }
-  )
-  t.deepEqual(
-    schemas.unflag(msgid, msgid),
-    { type: 'flag', flag: { link: msgid, reason: false }, redacts: msgid }
+    schemas.vote(msgid, -1, 'reason'),
+    { type: 'vote', vote: { link: msgid, value: -1, reason: 'reason' } }
   )
   t.deepEqual(
     schemas.pub(feedid, 'host', 123),
