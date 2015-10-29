@@ -16,10 +16,10 @@ var schemas = require('ssb-msg-schemas')
 
 schemas.post(text, root (optional), branch (optional), mentions (optional), recps (optional))
 // => { type: 'post', text: text, root: root, branch: branch, mentions: mentions, recps: recps }
-schemas.name(userId, name)
-// => { type: 'about', about: userId, name: name }
-schemas.image(userId, imgLink)
-// => { type: 'about', about: userId, image: imgLink }
+schemas.name(id, name)
+// => { type: 'about', about: id, name: name }
+schemas.image(id, imgLink)
+// => { type: 'about', about: id, image: imgLink }
 schemas.follow(userId)
 // => { type: 'contact', contact: userId, following: true, blocking: false }
 schemas.unfollow(userId)
@@ -66,3 +66,4 @@ schemas.pub(id, host, port)
    - Of the attributes specified here, `name` and `image` are votable.
    - Therefore, `name` and `image` should not appear in the same message.
    - Reason: vote messages cant differentiate on content within a message. If `name` and `image` are grouped together, a vote on the message is a vote on both pieces of information.
+ - Typically, `type: about` is for users, but it can also be used on msgs and blobs.
