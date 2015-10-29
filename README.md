@@ -6,8 +6,7 @@ Functions to create common SSB messages.
 { type: 'post', text: String, root: Link, branch: Link, recps: FeedLinks, mentions: Links }
 { type: 'about', about: Link, name: String, image: BlobLink }
 { type: 'contact', contact: FeedLink, following: Bool, blocking: Bool }
-{ type: 'vote', vote: { link: Ref, value: -1|0|1 } }
-{ type: 'flag', flag: { link: Ref, reason: false|String }, redacts: MsgLink }
+{ type: 'vote', vote: { link: Ref, value: -1|0|1, reason: String } }
 { type: 'pub', pub: { link: FeedRef, host: String, port: Number } }
 ```
 
@@ -33,10 +32,8 @@ schemas.unblock(userId)
 // => { type: 'contact', contact: userId, blocking: false }
 schemas.vote(id, vote)
 // => { type: 'vote', vote: { link: id, value: vote } }
-schemas.flag(id, reason)
-// => { type: 'flag', flag: { link: id, reason: reason } }
-schemas.unflag(id, flagmsgId (optional))
-// => { type: 'flag', flag: { link: id, reason: false }, redacts: flagmsgId }
+schemas.vote(id, vote, reason)
+// => { type: 'vote', vote: { link: id, value: vote, reason: reason } }
 schemas.pub(id, host, port)
 // => { type: 'pub', pub: { link: id, host: host, port: port } }
 ```

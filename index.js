@@ -78,36 +78,14 @@ exports.unblock = function (userId) {
   return { type: 'contact', contact: link(userId), blocking: false }
 }
 
-exports.vote = function (id, vote) {
-  var votelink = mlib.link(id)
-  if (!votelink)
+exports.vote = function (id, vote, reason) {
+  var voteLink = mlib.link(id)
+  if (!voteLink)
     throw new Error('invalid target id')
-  votelink.value = vote
-  return { type: 'vote', vote: votelink }
-}
-
-exports.flag = function (id, reason) {
-  var flaglink = mlib.link(id)
-  if (!flaglink)
-    throw new Error('invalid target id')
-  flaglink.reason = reason
-  return { type: 'flag', flag: flaglink }
-}
-
-exports.unflag = function (id, flagmsgId) {
-  var flaglink = mlib.link(id)
-  if (!flaglink)
-    throw new Error('invalid target id')
-  flaglink.reason = false
-
-  var content = { type: 'flag', flag: flaglink }
-  if (flagmsgId) {
-    var redacts = link(flagmsgId)
-    if (!redacts)
-      throw new Error('invalid redacts target')
-    content.redacts = redacts
-  }
-  return content
+  voteLink.value = vote
+  if (reason && typeof reason === 'string')
+    voteLink.reason = reason
+  return { type: 'vote', vote: voteLink }
 }
 
 exports.pub = function (id, host, port) {
