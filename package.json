@@ -1,6 +1,6 @@
 {
   "name": "ssb-msg-schemas",
-  "version": "5.0.0",
+  "version": "6.0.0",
   "description": "validation and publishing methods for common ssb message types",
   "main": "index.js",
   "scripts": {
