@@ -3,7 +3,7 @@
 Functions to create common SSB messages.
 
 ```js
-{ type: 'post', text: String, root: MsgLink, branch: MsgLink, recps: FeedLinks, mentions: Links }
+{ type: 'post', text: String, topic: String, root: MsgLink, branch: MsgLink, recps: FeedLinks, mentions: Links }
 { type: 'about', about: Link, name: String, image: BlobLink }
 { type: 'contact', contact: FeedLink, following: Bool, blocking: Bool }
 { type: 'vote', vote: { link: Ref, value: -1|0|1, reason: String } }
@@ -14,8 +14,8 @@ Functions to create common SSB messages.
 ```js
 var schemas = require('ssb-msg-schemas')
 
-schemas.post(text, root (optional), branch (optional), mentions (optional), recps (optional))
-// => { type: 'post', text: text, root: root, branch: branch, mentions: mentions, recps: recps }
+schemas.post(text, root (optional), branch (optional), mentions (optional), recps (optional), topic (optional))
+// => { type: 'post', text: text, topic: topic, root: root, branch: branch, mentions: mentions, recps: recps }
 schemas.name(id, name)
 // => { type: 'about', about: id, name: name }
 schemas.image(id, imgLink)
@@ -41,9 +41,11 @@ schemas.pub(id, host, port)
 ### type: post
 
 ```js
-{ type: 'post', text: String, root: MsgLink, branch: MsgLink, recps: FeedLinks, mentions: Links }
+{ type: 'post', text: String, topic: String, root: MsgLink, branch: MsgLink, recps: FeedLinks, mentions: Links }
 ```
 
+ - `topic` is optionally used to filter posts into groups, similar to subreddits or chat channels. 
+   - If not specified, the post is in the main feed.
  - `root` and `branch` are for replies.
    - `root` should point to the topmost message in the thread.
    - `branch` should point to the message in the thread which is being replied to.

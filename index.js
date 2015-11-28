@@ -21,7 +21,7 @@ function links (l) {
   return l.map(link)
 }
 
-exports.post = function (text, root, branch, mentions, recps) {
+exports.post = function (text, root, branch, mentions, recps, topic) {
   var content = { type: 'post', text: text }
   if (root) {
     root = link(root)
@@ -47,6 +47,12 @@ exports.post = function (text, root, branch, mentions, recps) {
       throw new Error('recps are not valid links')
     content.recps = recps
   }
+  if (topic) {
+    if (typeof topic !== 'string')
+      throw new Error('topic must be a string')
+    content.topic = topic
+  }
+
   return content
 }
 
