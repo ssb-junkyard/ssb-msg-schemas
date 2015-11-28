@@ -44,7 +44,8 @@ schemas.pub(id, host, port)
 { type: 'post', text: String, topic: String, root: MsgLink, branch: MsgLink, recps: FeedLinks, mentions: Links }
 ```
 
- - `topic` is used to filter posts into groups, similar to subreddits or chat channels. 
+ - `topic` is optionally used to filter posts into groups, similar to subreddits or chat channels. 
+   - If not specified, the post is in the main feed.
  - `root` and `branch` are for replies.
    - `root` should point to the topmost message in the thread.
    - `branch` should point to the message in the thread which is being replied to.
