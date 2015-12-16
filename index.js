@@ -21,7 +21,7 @@ function links (l) {
   return l.map(link)
 }
 
-exports.post = function (text, root, branch, mentions, recps) {
+exports.post = function (text, root, branch, mentions, recps, channel) {
   var content = { type: 'post', text: text }
   if (root) {
     root = link(root)
@@ -47,6 +47,12 @@ exports.post = function (text, root, branch, mentions, recps) {
       throw new Error('recps are not valid links')
     content.recps = recps
   }
+  if (channel) {
+    if (typeof channel !== 'string')
+      throw new Error('channel must be a string')
+    content.channel = channel
+  }
+
   return content
 }
 
