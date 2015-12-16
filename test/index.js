@@ -25,7 +25,7 @@ tape('schemas', function (t) {
   )
   t.deepEqual(
     schemas.post('text', null, null, null, null, 'stuff'),
-    { type: 'post', text: 'text', topic: 'stuff' }
+    { type: 'post', text: 'text', channel: 'stuff' }
   )
   t.deepEqual(
     schemas.name(feedid, 'name'),
