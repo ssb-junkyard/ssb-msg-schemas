@@ -56,6 +56,48 @@ exports.post = function (text, root, branch, mentions, recps, channel) {
   return content
 }
 
+exports.postEdit = function(text, root, branch, mentions, recps, channel, revision) {
+  var content = { type: 'post-edit', text: text }
+  if (root) {
+    root = link(root)
+    if (!root)
+      throw new Error('root is not a valid link')
+    content.root = root
+  }
+  if (branch) {
+    branch = link(branch)
+    if (!branch)
+      throw new Error('branch is not a valid link')
+    content.branch = branch
+  }
+  if (revision) { // Revisions are like branches, except they form a differently
+                  // templated (and regarded) thread
+    revision = link(branch)
+    if (!revision)
+      throw new Error('revision is not a valid link')
+    content.revision = revision
+  }
+  if (mentions && (!Array.isArray(mentions) || mentions.length)) {
+    mentions = links(mentions)
+    if (!mentions || !mentions.length)
+      throw new Error('mentions are not valid links')
+    content.mentions = mentions
+  }
+  if (recps && (!Array.isArray(recps) || recps.length)) {
+    recps = links(recps)
+    if (!recps || !recps.length)
+      throw new Error('recps are not valid links')
+    content.recps = recps
+  }
+  if (channel) {
+    if (typeof channel !== 'string')
+      throw new Error('channel must be a string')
+    content.channel = channel
+  }
+
+  return content  
+}
+
 exports.name = function (userId, name) {
   return { type: 'about', about: link(userId), name: name }
 }
