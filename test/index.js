@@ -28,6 +28,14 @@ tape('schemas', function (t) {
     { type: 'post', text: 'text', channel: 'stuff' }
   )
   t.deepEqual(
+    schemas.postEdit('revised text', feedid, msgid),
+    { type: 'post-edit', text: 'revised text', revision: msgid, mentions: [feedid]}
+  )
+  t.deepEqual(
+    schemas.postEdit('revised text', null, msgid2),
+    { type: 'post-edit', text: 'revised text', revision: msgid2}
+  )
+  t.deepEqual(
     schemas.name(feedid, 'name'),
     { type: 'about', about: feedid, name: 'name' }
   )
