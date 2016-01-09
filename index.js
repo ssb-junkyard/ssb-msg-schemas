@@ -56,8 +56,14 @@ exports.post = function (text, root, branch, mentions, recps, channel) {
   return content
 }
 
-exports.postEdit = function(text, mentions, revision) {
+exports.postEdit = function(text, root, mentions, revision) {
   var content = { type: 'post-edit', text: text }
+  if (root) {
+    root = link(root)
+    if (!root)
+      throw new Error('root is not a valid link')
+    content.root = root
+  }
   if (revision) { // Revisions are like branches, except they form a differently
                   // templated (and regarded) thread
     revision = link(revision)

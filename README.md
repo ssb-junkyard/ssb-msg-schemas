@@ -4,7 +4,7 @@ Functions to create common SSB messages.
 
 ```js
 { type: 'post', text: String, channel: String, root: MsgLink, branch: MsgLink, recps: FeedLinks, mentions: Links }
-{ type: 'post-edit', text: String, revision: MsgLink, mentions: Links }
+{ type: 'post-edit', text: String, root: MsgLink, revision: MsgLink, mentions: Links }
 { type: 'about', about: Link, name: String, image: BlobLink }
 { type: 'contact', contact: FeedLink, following: Bool, blocking: Bool }
 { type: 'vote', vote: { link: Ref, value: -1|0|1, reason: String } }
@@ -17,8 +17,8 @@ var schemas = require('ssb-msg-schemas')
 
 schemas.post(text, root (optional), branch (optional), mentions (optional), recps (optional), channel (optional))
 // => { type: 'post', text: text, channel: channel, root: root, branch: branch, mentions: mentions, recps: recps }
-schemas.postEdit(text, mentions (optional), revision)
-// => { type: 'post-edit', text: text, revision: revision, mentions: mentions}
+schemas.postEdit(text, root, mentions (optional), revision)
+// => { type: 'post-edit', text: text, root: root, revision: revision, mentions: mentions}
 schemas.name(id, name)
 // => { type: 'about', about: id, name: name }
 schemas.image(id, imgLink)
@@ -63,11 +63,12 @@ schemas.pub(id, host, port)
 ### type: postEdit
 
 ```js
-{ type: 'post-edit', text: text, revision: revision, mentions: mentions}
+{ type: 'post-edit', text: text, root: root, revision: revision, mentions: mentions}
 ```
 
 - `text` is used for posting the revised text that should take the place of some
   previous text.
+- `root` should point to the topmost message in the thread.
 - `revision` points to a message that should be revised with `text`.
 - `mentions` is used as in `post`, replacing the previous `mentions` of the
   message in `revision`.
