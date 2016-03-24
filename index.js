@@ -64,18 +64,17 @@ exports.postEdit = function(text, root, revisionRoot, revisionBranch, mentions) 
       throw new Error('root is not a valid link')
     content.root = root
   }
-  if (revisionRoot) {
-    revisionRoot = link(revisionRoot)
-    if (!revisionRoot)
-      throw new Error('revisionRoot is not a valid link')
-    content.revisionRoot = revisionRoot
-  }
-  if (revisionBranch) {
-    revisionBranch = link(revisionBranch)
-    if (!revisionBranch)
-      throw new Error('revisionBranch is not a valid link')
-    content.revisionBranch = revisionBranch
-  }
+  
+  revisionRoot = link(revisionRoot)
+  if (!revisionRoot)
+    throw new Error('revisionRoot is not a valid link')
+  content.revisionRoot = revisionRoot
+
+  revisionBranch = link(revisionBranch)
+  if (!revisionBranch)
+    throw new Error('revisionBranch is not a valid link')
+  content.revisionBranch = revisionBranch
+
   if (mentions && (!Array.isArray(mentions) || mentions.length)) {
     mentions = links(mentions)
     if (!mentions || !mentions.length)
