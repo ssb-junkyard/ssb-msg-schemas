@@ -4,7 +4,9 @@
   "description": "validation and publishing methods for common ssb message types",
   "main": "index.js",
   "scripts": {
-    "test": "set -e; for t in test/*.js; do node $t; done"
+    "test": "set -e; for t in test/*.js; do node $t; done",
+    "lint": "standard",
+    "lint:fix": "standard --fix"
   },
   "repository": {
     "type": "git",
@@ -16,6 +18,7 @@
     "ssb-ref": "~2.0.0"
   },
   "devDependencies": {
+    "standard": "^10.0.2",
     "tape": "~3.0.0"
   },
   "author": "Paul Frazee <pfrazee@gmail.com>",
