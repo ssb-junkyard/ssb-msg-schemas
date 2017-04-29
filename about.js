@@ -25,6 +25,7 @@ const schema = {
   required: ['type', 'about'],
   anyOf: [
     { required: ['name'] },
+    { required: ['description'] },
     { required: ['image'] }
   ],
   properties: {
@@ -36,9 +37,8 @@ const schema = {
       type: 'string',
       pattern: stringifyRegex(feedIdRegex)
     },
-    name: {
-      type: 'string'
-    },
+    name: { type: 'string' },
+    description: { type: 'string' },
     image: {
       type: 'object',
       required: ['link', 'size'],

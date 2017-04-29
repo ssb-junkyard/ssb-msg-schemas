@@ -29,7 +29,7 @@ test('About validate', t => {
 
   t.true(
     isAbout({
-      type: 'about', about: feedId, image: { link: blobId, size: 123 }
+      type: 'about', about: feedId, image: { link: blobId, size: 123 }, description: 'mememe', other: 'woop'
     }),
     'passes well formed image-type about messages'
   )
@@ -73,7 +73,7 @@ test('About validate', t => {
     isAbout({
       type: 'about', about: feedId
     }),
-    'fails message which has neither name nor image'
+    'fails message which has neither name nor image nor description'
   )
 
   t.end()
