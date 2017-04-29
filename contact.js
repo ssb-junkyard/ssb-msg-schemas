@@ -1,4 +1,4 @@
-const { link } = require('./util/link')
+const { link } = require('./util')
 
 function follow (userId) {
   return { type: 'contact', contact: link(userId), following: true, blocking: false }

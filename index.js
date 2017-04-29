@@ -1,12 +1,14 @@
 const {
-  create: { name, image } 
+  create: { name, image },
+  schema: aboutSchema,
+  validate: isAbout
 } = require('./about')
 
 const {
   create: { follow, unfollow, block, unblock }
 } = require('./contact')
 
-const { 
+const {
   create: post
 } = require('./post')
 
@@ -19,16 +21,14 @@ const {
   create: pub
 } = require('./pub')
 
-const { 
+const {
   create: vote
 } = require('./vote')
 
-
 module.exports = {
+  name, image, aboutSchema, isAbout,
+  follow, unfollow, block, unblock,
   post,
-  name, image,
-  follow, unfollow,
-  block, unblock,
   pub,
   vote
 }

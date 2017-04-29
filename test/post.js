@@ -1,7 +1,7 @@
 const test = require('tape')
 
 const { post: Post } = require('../')
-const { postId, msgId, msgId2, feedId, blobId } = require('./mockIds')
+const { msgId, msgId2, feedId, blobId } = require('./mockIds')
 
 test('Post create', t => {
   t.deepEqual(

@@ -17,8 +17,15 @@ function links (l) {
   return l.map(link)
 }
 
+function stringifyRegex (regex) {
+  return regex.toString()
+    .replace(/^\//, '')
+    .replace(/\/$/, '')
+}
+
 module.exports = {
   link,
-  links
+  links,
+  stringifyRegex
 }
 

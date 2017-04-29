@@ -1,7 +1,7 @@
 const test = require('tape')
 
 const { vote: Vote } = require('../')
-const { postId, msgId, msgId2, feedId, blobId } = require('./mockIds')
+const { msgId } = require('./mockIds')
 
 test('Vote create', function (t) {
   t.deepEqual(
@@ -14,3 +14,4 @@ test('Vote create', function (t) {
   )
   t.end()
 })
+

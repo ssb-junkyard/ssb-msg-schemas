@@ -1,4 +1,4 @@
-const { link, links } = require('./util/link') 
+const { link, links } = require('./util')
 
 function create (text, root, branch, mentions, recps, channel) {
   var content = { type: 'post', text }

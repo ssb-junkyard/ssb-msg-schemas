@@ -4,7 +4,7 @@
   "description": "validation and publishing methods for common ssb message types",
   "main": "index.js",
   "scripts": {
-    "test": "set -e; for t in test/*.js; do node $t; done",
+    "test": "tape test/*.js | tap-spec",
     "lint": "standard",
     "lint:fix": "standard --fix"
   },
@@ -13,12 +13,14 @@
     "url": "git://github.com/ssbc/ssb-msg-schemas.git"
   },
   "dependencies": {
+    "is-my-json-valid": "^2.16.0",
     "pull-stream": "~2.27.0",
     "ssb-msgs": "^5.0.0",
-    "ssb-ref": "~2.0.0"
+    "ssb-ref": "^2.7.0"
   },
   "devDependencies": {
     "standard": "^10.0.2",
+    "tap-spec": "^4.1.1",
     "tape": "~3.0.0"
   },
   "author": "Paul Frazee <pfrazee@gmail.com>",

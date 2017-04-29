@@ -1,7 +1,7 @@
 const test = require('tape')
 
 const { follow, unfollow, block, unblock } = require('../')
-const { postId, msgId, msgId2, feedId, blobId } = require('./mockIds')
+const { feedId } = require('./mockIds')
 
 test('Contact creators', t => {
   t.deepEqual(
