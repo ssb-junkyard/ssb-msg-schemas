@@ -1,5 +1,5 @@
 const Validate = require('is-my-json-valid')
-const { msgIdRegex, blobIdRegex } = require('ssb-ref')
+const { msgIdRegex, feedIdRegex, blobIdRegex } = require('ssb-ref')
 
 const { link, links, stringifyRegex } = require('./util')
 
@@ -38,12 +38,6 @@ function create (text, root, branch, mentions, recps, channel) {
 const schema = {
   $schema: 'https://www.github.com/ssbc/patchcore',
   type: 'object',
-  definitions: {
-    messageId: {
-      type: 'string',
-      pattern: stringifyRegex(msgIdRegex)
-    }
-  },
   required: ['type', 'text'],
   properties: {
     type: {
@@ -51,9 +45,79 @@ const schema = {
       pattern: '^post$'
     },
     text: { type: 'string' },
+    channel: { type: 'string', },
     root: { $ref: '#/definitions/messageId' },
     branch: { $ref: '#/definitions/messageId' },
-  }
+    mentions: {
+      oneOf: [
+        { type: 'null' },
+        {
+          type: 'array',
+          items: {
+            oneOf: [
+              { $ref: '#/definitions/mentions/message' },
+              { $ref: '#/definitions/mentions/feed' },
+              { $ref: '#/definitions/mentions/blob' }
+            ]
+          }
+        }
+      ]
+    },
+    recps: {
+      oneOf: [
+        { type: 'null' },
+        {
+          type: 'array',
+          items: {
+            oneOf: [
+              { $ref: '#/definitions/feedId' },
+              { $ref: '#/definitions/mentions/feed' },
+            ]
+          }
+        }
+      ]
+    }
+  },
+  definitions: {
+    messageId: {
+      type: 'string',
+      pattern: stringifyRegex(msgIdRegex)
+    },
+    feedId: {
+      type: 'string',
+      pattern: stringifyRegex(feedIdRegex)
+    },
+    blobId: {
+      type: 'string',
+      pattern: stringifyRegex(blobIdRegex)
+    },
+    mentions: {
+      message: {
+        type: 'object',
+        required: ['link'],
+        properties: {
+          link: { $ref: '#/definitions/messageId'}
+        }
+      },
+      feed: {
+        type: 'object',
+        required: ['link', 'name'],
+        properties: {
+          link: { $ref: '#/definitions/feedId'},
+          name: { type: 'string' }
+        }
+      },
+      blob: {
+        type: 'object',
+        required: ['link', 'name'],
+        properties: {
+          link: { $ref: '#/definitions/blobId'},
+          name: { type: 'string' }
+        }
+      }
+
+    }
+  },
 }
 
 const validate = Validate(schema, { verbose: true })

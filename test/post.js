@@ -3,6 +3,10 @@ const test = require('tape')
 const { post: Post, isPost } = require('../')
 const { msgId, msgId2, feedId, blobId } = require('./mockIds')
 
+// NOTE : to check validation errors, you can do this:
+// isPost( testMsg )
+// console.log('show errors on last validation', isPost.errors)
+
 test('Post create', t => {
   t.deepEqual(
     Post('dog'),
@@ -29,6 +33,9 @@ test('Post create', t => {
 })
 
 test('Post validate', t => {
+
+  // SIMPLE POST
+
   t.true(
     isPost({
       type: 'post',
@@ -52,6 +59,8 @@ test('Post validate', t => {
     'fails post without text'
   )
 
+  // REPLIES
+
   t.true(
     isPost({
       type: 'post',
@@ -61,7 +70,6 @@ test('Post validate', t => {
     }),
     'passes simple reply-post message'
   )
-
   t.false(
     isPost({
       type: 'post',
@@ -81,6 +89,149 @@ test('Post validate', t => {
     'fails reply test if branch is not a feed id'
   )
 
+  // CHANNELS
+
+  t.true(
+    isPost({
+      type: 'post',
+      text: 'here is a some text',
+      channel: 'new-zealand',
+    }),
+    'passes post with channel'
+  )
+  t.false(
+    isPost({
+      type: 'post',
+      text: 'here is a some text',
+      channel: 23,
+    }),
+    'fails post with non-string channel'
+  )
+
+  // MENTIONS
+
+  t.true(
+    isPost({
+      type: 'post',
+      text: 'here is a some text',
+      mentions: [
+        {
+          link: feedId,
+          name: 'Piet'
+        },
+        {
+          link: blobId,
+          name: 'Tararuras.jpg'
+        },
+        {
+          link: msgId 
+        }
+      ]
+    }),
+    'passes post with combination of feed + blob + message mentions'
+  )
+  t.true(
+    isPost({
+      type: 'post',
+      text: 'here is a some text',
+      mentions: null
+    }),
+    'passes post with null mentions'
+  )
+  t.true(
+    isPost({
+      type: 'post',
+      text: 'here is a some text',
+      mentions: []
+    }),
+    'passes post with empty mentions'
+  )
+
+  t.false(
+    isPost({
+      type: 'post',
+      text: 'here is a some text',
+      mentions: [
+        {
+          link: 'not a link',
+          name: 'Piet'
+        },
+      ]
+    }),
+    'fails a post with a dud mention link'
+  )
+  t.false(
+    isPost({
+      type: 'post',
+      text: 'here is a some text',
+      mentions: [
+        msgId
+      ]
+    }),
+    'fails a post with badly formed mentions'
+  )
+
+  // RECPS
+
+  t.true(
+    isPost({
+      type: 'post',
+      text: 'here is a some text',
+      recps: [
+        feedId,
+        {
+          link: feedId,
+          name: 'Piet'
+        }
+      ]
+    }),
+    'passes post with combination of recipient mentions'
+  )
+  t.true(
+    isPost({
+      type: 'post',
+      text: 'here is a some text',
+      recps: null
+    }),
+    'passes post with null recps'
+  )
+  t.true(
+    isPost({
+      type: 'post',
+      text: 'here is a some text',
+      recps: []
+    }),
+    'passes post with empty recps'
+  )
+
+  t.false(
+    isPost({
+      type: 'post',
+      text: 'here is a some text',
+      recps: [
+        'not an id',
+        {
+          link: feedId,
+          name: 'Piet'
+        }
+      ]
+    }),
+    'fails a post with a broken string recps'
+  )
+  t.false(
+    isPost({
+      type: 'post',
+      text: 'here is a some text',
+      recps: [
+        feedId,
+        {
+          link: 'not an Id',
+          name: 'Piet'
+        }
+      ]
+    }),
+    'fails a post with a broken link recps'
+  )
 
   t.end()
 })
