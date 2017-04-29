@@ -10,6 +10,7 @@ const {
 
 const {
   create: post,
+  schema: postSchema,
   validate: isPost
 } = require('./post')
 
@@ -29,7 +30,7 @@ const {
 module.exports = {
   name, image, aboutSchema, isAbout,
   follow, unfollow, block, unblock,
-  post, isPost,
+  post, postSchema, isPost,
   postEdit,
   pub,
   vote
