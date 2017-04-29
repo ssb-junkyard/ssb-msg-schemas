@@ -13,4 +13,5 @@ test('Post-edit create', t => {
     postEdit('revised text', msgId, msgId2, msgId2, null),
     { type: 'post-edit', text: 'revised text', root: msgId, revisionRoot: msgId2, revisionBranch: msgId2}
   )
+  t.end()
 })

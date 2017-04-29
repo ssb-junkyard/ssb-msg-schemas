@@ -30,6 +30,7 @@ module.exports = {
   name, image, aboutSchema, isAbout,
   follow, unfollow, block, unblock,
   post, isPost,
+  postEdit,
   pub,
   vote
 }
