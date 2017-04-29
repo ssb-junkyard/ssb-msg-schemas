@@ -1,6 +1,6 @@
 const test = require('tape')
 
-const { post: Post } = require('../')
+const { post: Post, isPost } = require('../')
 const { msgId, msgId2, feedId, blobId } = require('./mockIds')
 
 test('Post create', t => {
@@ -27,3 +27,61 @@ test('Post create', t => {
 
   t.end()
 })
+
+test('Post validate', t => {
+  t.true(
+    isPost({
+      type: 'post',
+      text: 'here is a some text'
+    }),
+    'passes simple post message'
+  )
+
+  t.false(
+    isPost({
+      type: 'posts',
+      text: 'here is a some text'
+    }),
+    'fails non-post messages'
+  )
+
+  t.false(
+    isPost({
+      type: 'posts'
+    }),
+    'fails post without text'
+  )
+
+  t.true(
+    isPost({
+      type: 'post',
+      text: 'here is a some text',
+      root: msgId,
+      branch: msgId2
+    }),
+    'passes simple reply-post message'
+  )
+
+  t.false(
+    isPost({
+      type: 'post',
+      text: 'here is a some text',
+      root: 'not a root id',
+      branch: msgId2
+    }),
+    'fails reply test if root is not a feed id'
+  )
+  t.false(
+    isPost({
+      type: 'post',
+      text: 'here is a some text',
+      root: msgId,
+      branch: 'not a branch id'
+    }),
+    'fails reply test if branch is not a feed id'
+  )
+
+
+  t.end()
+})
+

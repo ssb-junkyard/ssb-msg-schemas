@@ -9,7 +9,8 @@ const {
 } = require('./contact')
 
 const {
-  create: post
+  create: post,
+  validate: isPost
 } = require('./post')
 
 
@@ -28,7 +29,7 @@ const {
 module.exports = {
   name, image, aboutSchema, isAbout,
   follow, unfollow, block, unblock,
-  post,
+  post, isPost,
   pub,
   vote
 }

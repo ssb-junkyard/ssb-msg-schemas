@@ -1,4 +1,7 @@
-const { link, links } = require('./util')
+const Validate = require('is-my-json-valid')
+const { msgIdRegex, blobIdRegex } = require('ssb-ref')
+
+const { link, links, stringifyRegex } = require('./util')
 
 function create (text, root, branch, mentions, recps, channel) {
   var content = { type: 'post', text }
@@ -32,14 +35,32 @@ function create (text, root, branch, mentions, recps, channel) {
   return content
 }
 
-function validate () {
+const schema = {
+  $schema: 'https://www.github.com/ssbc/patchcore',
+  type: 'object',
+  definitions: {
+    messageId: {
+      type: 'string',
+      pattern: stringifyRegex(msgIdRegex)
+    }
+  },
+  required: ['type', 'text'],
+  properties: {
+    type: {
+      type: 'string',
+      pattern: '^post$'
+    },
+    text: { type: 'string' },
+    root: { $ref: '#/definitions/messageId' },
+    branch: { $ref: '#/definitions/messageId' },
+  }
 }
 
-const schema = {}
+const validate = Validate(schema, { verbose: true })
 
 module.exports = {
   create,
-  validate,
-  schema
+  schema,
+  validate
 }
 
