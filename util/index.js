@@ -17,6 +17,7 @@ function links (l) {
   return l.map(link)
 }
 
+// this may not be needed
 function stringifyRegex (regex) {
   return regex.toString()
     .replace(/^\//, '')

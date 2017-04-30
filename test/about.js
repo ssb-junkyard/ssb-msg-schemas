@@ -34,6 +34,13 @@ test('About validate', t => {
     'passes well formed image-type about messages'
   )
 
+  t.true(
+    isAbout({
+      type: 'about', about: feedId, image: blobId, description: 'mememe', other: 'woop'
+    }),
+    'passes well formed image-type about messages (with string-image)'
+  )
+
   t.false(
     isAbout({
       type: 'aboot', about: feedId
@@ -61,6 +68,12 @@ test('About validate', t => {
     }),
     'fails dud image (must have blobIds)'
   )
+  t.false(
+    isAbout({
+      type: 'about', about: feedId, image: 'badBlobId'
+    }),
+    'fails dud image (must have blobIds - string version)'
+  )
 
   t.false(
     isAbout({
@@ -69,12 +82,13 @@ test('About validate', t => {
     'fails dud image (must have size)'
   )
 
-  t.false(
-    isAbout({
-      type: 'about', about: feedId
-    }),
-    'fails message which has neither name nor image nor description'
-  )
+  // TODO : extract for about profile in patchbay
+  // t.false(
+  //   isAbout({
+  //     type: 'about', about: feedId
+  //   }),
+  //   'fails message which has neither name nor image nor description'
+  // )
 
   t.end()
 })

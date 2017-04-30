@@ -70,6 +70,15 @@ test('Post validate', t => {
     }),
     'passes simple reply-post message'
   )
+  t.true(
+    isPost({
+      type: 'post',
+      text: 'here is a some text',
+      root: msgId,
+      branch: [ msgId2 ]  // could be one or more ids
+    }),
+    'passes simple reply-post message'
+  )
   t.false(
     isPost({
       type: 'post',

@@ -1,7 +1,7 @@
 const Validate = require('is-my-json-valid')
 const { feedIdRegex, blobIdRegex } = require('ssb-ref')
 
-const { link, stringifyRegex } = require('./util')
+const { link } = require('./util')
 
 function name (userId, name) {
   return {
@@ -23,11 +23,12 @@ const schema = {
   $schema: 'https://www.github.com/ssbc/patchcore',
   type: 'object',
   required: ['type', 'about'],
-  anyOf: [
-    { required: ['name'] },
-    { required: ['description'] },
-    { required: ['image'] }
-  ],
+  // TODO : extract for about profile in patchbay
+  // anyOf: [
+  //   { required: ['name'] },
+  //   { required: ['description'] },
+  //   { required: ['image'] }
+  // ],
   properties: {
     type: {
       type: 'string',
@@ -35,22 +36,30 @@ const schema = {
     },
     about: {
       type: 'string',
-      pattern: stringifyRegex(feedIdRegex)
+      pattern: feedIdRegex
     },
     name: { type: 'string' },
     description: { type: 'string' },
     image: {
-      type: 'object',
-      required: ['link', 'size'],
-      properties: {
-        link: {
+      anyOf: [
+        {
           type: 'string',
           pattern: blobIdRegex
         },
-        size: {
-          type: 'integer'
-        }
-      }
+        {
+          type: 'object',
+          required: ['link', 'size'],
+          properties: {
+            link: {
+              type: 'string',
+              pattern: blobIdRegex
+            },
+            size: {
+              type: 'integer'
+            }
+          }
+        } 
+      ]
     }
   }
 }

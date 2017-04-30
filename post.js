@@ -1,7 +1,7 @@
 const Validate = require('is-my-json-valid')
 const { msgIdRegex, feedIdRegex, blobIdRegex } = require('ssb-ref')
 
-const { link, links, stringifyRegex } = require('./util')
+const { link, links } = require('./util')
 
 function create (text, root, branch, mentions, recps, channel) {
   var content = { type: 'post', text }
@@ -47,7 +47,12 @@ const schema = {
     text: { type: 'string' },
     channel: { type: 'string', },
     root: { $ref: '#/definitions/messageId' },
-    branch: { $ref: '#/definitions/messageId' },
+    branch: {
+      oneOf: [
+        { $ref: '#/definitions/messageId' },
+        { type: 'array', items: { $ref: '#/definitions/messageId' } }
+      ]
+    },
     mentions: {
       oneOf: [
         { type: 'null' },
@@ -81,15 +86,15 @@ const schema = {
   definitions: {
     messageId: {
       type: 'string',
-      pattern: stringifyRegex(msgIdRegex)
+      pattern: msgIdRegex
     },
     feedId: {
       type: 'string',
-      pattern: stringifyRegex(feedIdRegex)
+      pattern: feedIdRegex
     },
     blobId: {
       type: 'string',
-      pattern: stringifyRegex(blobIdRegex)
+      pattern: blobIdRegex
     },
     mentions: {
       message: {
