@@ -30,7 +30,7 @@ exports.post = function (text, root, branch, mentions, recps, channel) {
     content.root = root
   }
   if (branch) {
-    branch = link(branch)
+    branch = Array.isArray(branch) ? branch.map(link) : link(branch)
     if (!branch)
       throw new Error('branch is not a valid link')
     content.branch = branch

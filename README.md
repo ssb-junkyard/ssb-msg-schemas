@@ -3,7 +3,7 @@
 Functions to create common SSB messages.
 
 ```js
-{ type: 'post', text: String, channel: String, root: MsgLink, branch: MsgLink, recps: FeedLinks, mentions: Links }
+{ type: 'post', text: String, channel: String, root: MsgLink, branch: MsgLink|MsgLinks, recps: FeedLinks, mentions: Links }
 { type: 'post-edit', text: String, root: MsgLink, revisionRoot: MsgLink, revisionBranch: MsgLink, mentions: Links }
 { type: 'about', about: Link, name: String, image: BlobLink }
 { type: 'contact', contact: FeedLink, following: Bool, blocking: Bool }
@@ -44,13 +44,13 @@ schemas.pub(id, host, port)
 ### type: post
 
 ```js
-{ type: 'post', text: String, channel: String, root: MsgLink, branch: MsgLink, recps: FeedLinks, mentions: Links }
+{ type: 'post', text: String, channel: String, root: MsgLink, branch: MsgLink|MsgLinks, recps: FeedLinks, mentions: Links }
 ```
 
  - `channel` is optionally used to filter posts into groups, similar to subreddits or chat channels.
  - `root` and `branch` are for replies.
    - `root` should point to the topmost message in the thread.
-   - `branch` should point to the message in the thread which is being replied to.
+   - `branch` should point to the message or set of messages in the thread which is being replied to.
    - In the first reply of a thread, `root === branch`, and both should be included.
    - `root` and `branch` should only point to `type: post` messages. If the post is about another message-type, use `mentions`.
  - `mentions` is a generic reference to other feeds, entities, or blobs.
