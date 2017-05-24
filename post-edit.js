@@ -29,13 +29,14 @@ function create (text, root, revisionRoot, revisionBranch, mentions) {
   return content  
 }
 
+
 const schema = {}
 
-const valitate = () => {}
+const validate = () => {}
 
 module.exports = {
   create,
   schema,
-  valitate
+  validate
 }
 

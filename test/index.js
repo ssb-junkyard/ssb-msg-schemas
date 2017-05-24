@@ -24,6 +24,10 @@ tape('schemas', function (t) {
     { type: 'post', text: 'text', root: msgid, branch: msgid2, mentions: [feedid, msgid, blobid], recps: [feedid] }
   )
   t.deepEqual(
+    schemas.post('text', msgid, [msgid, msgid2]),
+    { type: 'post', text: 'text', root: msgid, branch: [msgid, msgid2] }
+  )
+  t.deepEqual(
     schemas.post('text', null, null, null, null, 'stuff'),
     { type: 'post', text: 'text', channel: 'stuff' }
   )
