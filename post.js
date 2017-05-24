@@ -41,7 +41,7 @@ function create (text, root, branch, mentions, recps, channel) {
 }
 
 const schema = {
-  $schema: 'https://www.github.com/ssbc/patchcore',
+  $schema: 'http://json-schema.org/schema#',
   type: 'object',
   required: ['type', 'text'],
   properties: {

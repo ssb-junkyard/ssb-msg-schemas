@@ -20,7 +20,7 @@ function image (userId, imgLink) {
 }
 
 const schema = {
-  $schema: 'https://www.github.com/ssbc/patchcore',
+  $schema: 'http://json-schema.org/schema#',
   type: 'object',
   required: ['type', 'about'],
   // TODO : extract for about profile in patchbay
