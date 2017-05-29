@@ -3,6 +3,8 @@ const { msgIdRegex, feedIdRegex, blobIdRegex } = require('ssb-ref')
 
 const { link, links } = require('./util')
 
+const channelIdRegex = /^#.*$/
+
 function create (text, root, branch, mentions, recps, channel) {
   var content = { type: 'post', text }
   if (root) {
@@ -67,7 +69,8 @@ const schema = {
             oneOf: [
               { $ref: '#/definitions/mentions/message' },
               { $ref: '#/definitions/mentions/feed' },
-              { $ref: '#/definitions/mentions/blob' }
+              { $ref: '#/definitions/mentions/blob' },
+              { $ref: '#/definitions/mentions/channel' }
             ]
           }
         }
@@ -101,6 +104,10 @@ const schema = {
       type: 'string',
       pattern: blobIdRegex
     },
+    channelId: {
+      type: 'string',
+      pattern: channelIdRegex
+    },
     mentions: {
       message: {
         type: 'object',
@@ -124,8 +131,14 @@ const schema = {
           link: { $ref: '#/definitions/blobId'},
           name: { type: 'string' }
         }
+      },
+      channel: {
+        type: 'object',
+        required: ['link'],
+        properties: {
+          link: { $ref: '#/definitions/channelId'}
+        }
       }
-
     }
   },
 }

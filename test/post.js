@@ -1,7 +1,7 @@
 const test = require('tape')
 
 const { post: Post, isPost } = require('../')
-const { msgId, msgId2, feedId, blobId } = require('./mockIds')
+const { msgId, msgId2, feedId, blobId, channelId } = require('./mockIds')
 
 // NOTE : to check validation errors, you can do this:
 // isPost( testMsg )
@@ -17,8 +17,8 @@ test('Post create', t => {
     { type: 'post', text: 'dog', root: msgId, branch: msgId2, recps: [feedId] }
   )
   t.deepEqual(
-    Post('dog', null, null, [feedId, msgId, blobId]),
-    { type: 'post', text: 'dog', mentions: [feedId, msgId, blobId] }
+    Post('dog', null, null, [feedId, msgId, blobId, channelId]),
+    { type: 'post', text: 'dog', mentions: [feedId, msgId, blobId, channelId] }
   )
   t.deepEqual(
     Post('dog', msgId, msgId2, [feedId, msgId, blobId], [feedId]),
@@ -134,6 +134,9 @@ test('Post validate', t => {
         },
         {
           link: msgId 
+        },
+        {
+          link: channelId
         }
       ]
     }),
